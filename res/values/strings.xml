@@ -888,6 +888,10 @@
     <!-- Sound settings screen, setting option summary text -->
     <string name="vibrate_summary">Vibrate phone for incoming calls</string>
     <!-- Sound settings screen, setting option name -->
+    <string name="speaker_notifications">Always notify on speaker</string>
+    <!-- Sound settings screen, setting option summary text -->
+    <string name="speaker_notifications_summary">Play notifications on the speaker even when using headphones</string>
+    <!-- Sound settings screen, setting option name -->
     <string name="notification_sound_title">Notification ringtone</string>
     <!-- Sound settings screen, setting option summary text -->
     <string name="notification_sound_summary">Set your default notification ringtone</string>
@@ -950,6 +954,40 @@
     <string name="audio_record_proc_title">Noise cancellation</string>
     <!-- Sound settings screen, setting option summary text -->
     <string name="audio_record_proc_summary">Suppress background noise when speaking or recording.</string>
+    <!-- Sound settings screen, setting screen option name to enter menu to choose what silent mode affects -->
+    <string name="silent_mode_settings_title">Silent mode settings</string>
+    <!-- Sound settings screen, setting option summary text -->
+    <string name="silent_mode_settings_summary">Select which sounds are muted in silent mode.</string>
+
+    <!-- Sound and alerts settings, silent mode submenu -->
+    <!-- Screen title -->
+    <string name="silent_channels_label">Select sounds muted in silent mode</string>
+    <string name="silent_mode_settings_reset_to_default_title">Reset to defaults</string>
+    <string name="silent_mode_settings_reset_to_default_summary"></string>
+    <string name="silent_mode_settings_mute_all_title">Mute all</string>
+    <string name="silent_mode_settings_mute_all_summary"></string>
+
+    <string name="silent_mode_settings_voice_call_title">Voice calls</string>
+    <string name="silent_mode_settings_system_title">System sounds</string>
+    <string name="silent_mode_settings_ring_title">Call rings</string>
+    <string name="silent_mode_settings_music_title">Music</string>
+    <string name="silent_mode_settings_alarm_title">Alarms</string>
+    <string name="silent_mode_settings_notification_title">Notifications</string>
+    <string name="silent_mode_settings_bluetooth_title">Bluetooth output</string>
+    <string name="silent_mode_settings_system_enforced_title">System-enforced</string>
+    <string name="silent_mode_settings_dtmf_title">DTMF tones</string>
+    <string name="silent_mode_settings_tts_title">Text-to-speech</string>
+
+    <string name="silent_mode_settings_voice_call_summary">Don\'t hear active calls in silent mode.</string>
+    <string name="silent_mode_settings_system_summary">Silent mode silences system sounds.</string>
+    <string name="silent_mode_settings_ring_summary">Don\'t ring for incoming calls in silent mode.</string>
+    <string name="silent_mode_settings_music_summary">Don\'t play music in silent mode.</string>
+    <string name="silent_mode_settings_alarm_summary">Don\'t play alarms in silent mode.</string>
+    <string name="silent_mode_settings_notification_summary">Don\'t play notifications in silent mode.</string>
+    <string name="silent_mode_settings_bluetooth_summary">Don\'t play to bluetooth in silent mode.</string>
+    <string name="silent_mode_settings_system_enforced_summary">Don\'t play required sounds in silent mode.</string>
+    <string name="silent_mode_settings_dtmf_summary">Don\'t play dialing sounds in silent mode.</string>
+    <string name="silent_mode_settings_tts_summary">Don\'t play text-to-speech in silent mode.</string>
 
     <!-- Dock settings title, top level -->
     <string name="dock_settings">Dock</string>
@@ -1386,6 +1424,8 @@
     <string name="lockpattern_settings_enable_visible_pattern_title">Use visible pattern</string>
     <string name="lockpattern_settings_enable_visible_dots_title">Use visible dots</string>
     <string name="lockpattern_settings_show_error_path">Show incorrect path on error</string>
+    <string name="lockpattern_settings_show_unlock_msg">Show unlock message</string>
+    <string name="lockpattern_settings_show_unlock_error_msg">Show unlock error messages</string>
     <string name="lockpattern_settings_show_custom_msg">Show custom message</string>
     <string name="lockpattern_settings_show_sliders">Show sliders</string>
     <string name="lockpattern_settings_custom_msg">Custom message</string>
@@ -1442,7 +1482,7 @@
     <!-- Applications settings screen, setting check box title. If checked, the system allows installation of applications that are downloaded from random places, such as web sites.  -->
     <string name="install_applications">Unknown sources</string>
     <!-- Applications settings screen, setting check box summary.  This is the summary for "Unknown sources" checkbox  -->
-    <string name="install_unknown_applications">Allow install of non-Market applications</string>
+    <string name="install_unknown_applications">Allow installation of non-Market applications</string>
     <!-- Applications settings screen, message text of alert that appears if user selects the "Unknown sources" check box -->
     <string name="install_all_warning">Your phone and personal data are more vulnerable to attack by applications
  from unknown sources. You agree that you are solely responsible for any
@@ -2114,6 +2154,7 @@ found in the list of installed applications.</string>
     <string name="vpn_pptp_encryption">PPTP encryption</string>
     <string name="vpn_openvpn_port">Server port</string>
     <string name="vpn_openvpn_protocol">Protocol to use</string>
+    <string name="vpn_openvpn_device">Device to use</string>
     <string name="vpn_openvpn_userauth">User authentication</string>
     <string name="vpn_openvpn_userauth_summary">Set if additional username/password authentication needs to be used</string>
     <string name="vpn_openvpn_advanced_titlebar">Advanced Openvpn Settings</string>
@@ -2245,8 +2286,8 @@ found in the list of installed applications.</string>
 
     <!-- Tethering settings -->
     <string name="internet_tethering">Internet tethering</string>
-    <string name="internet_tethering_summary_on">Internet tethering over USB is enabled</string>
-    <string name="internet_tethering_summary_off">Internet tethering over USB is disabled</string>
+    <string name="internet_tethering_summary_on">Internet tethering via USB/BT is enabled</string>
+    <string name="internet_tethering_summary_off">Internet tethering via USB/BT is disabled</string>
 
     <!-- Apps2SD -->
     <!-- Text for the "Move" button. -->
@@ -2271,4 +2312,6 @@ found in the list of installed applications.</string>
     <string name="proxy_setting_summary">Configure a proxy to access the internet</string>
     <string name="proxy_wifi_only">Use proxy only on wifi</string>
 
+	<string name="spare_settings_title">Spare Parts</string>
+	<string name="launcher_settings_title">ADWLauncher</string>
 </resources>

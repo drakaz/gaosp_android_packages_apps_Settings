@@ -163,8 +163,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="DateTimeSettingsSetupWizard" android:label="@string/date_and_time">
-            android:screenOrientation="portrait"
+        <activity android:name="DateTimeSettingsSetupWizard" android:label="@string/date_and_time"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
@@ -232,6 +232,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="SilentChannels" android:label="@string/silent_channels_label">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.android.settings.SILENT_CHANNELS" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

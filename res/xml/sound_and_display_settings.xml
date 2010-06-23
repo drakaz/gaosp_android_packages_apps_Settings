@@ -29,6 +29,16 @@
                 android:order="1"
                 android:disableDependentsState="true" />
 
+        <PreferenceScreen
+                android:title="@string/silent_mode_settings_title"
+                android:summary="@string/silent_mode_settings_summary"
+                android:order="10">
+                <intent
+                        android:action="android.intent.action.MAIN"
+                        android:targetPackage="com.android.settings"
+                        android:targetClass="com.android.settings.SilentChannels" />
+        </PreferenceScreen>
+
         <com.android.settings.RingerVolumePreference
                 android:key="ring_volume"
                 android:title="@string/ring_volume_title"
@@ -63,6 +73,13 @@
                 android:title="@string/vibrate_title"
                 android:summary="@string/vibrate_summary"
                 android:order="6"
+                android:persistent="false" />
+
+        <CheckBoxPreference
+                android:key="speaker_notifications"
+                android:title="@string/speaker_notifications"
+                android:summary="@string/speaker_notifications_summary"
+                android:order="7"
                 android:persistent="false" />
 
         <com.android.settings.DefaultRingtonePreference

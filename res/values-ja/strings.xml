@@ -401,6 +401,8 @@
     <string name="ring_volume_summary" msgid="8370699933709381329">"着信音と通知音の音量"</string>
     <string name="vibrate_title" msgid="5408984084125311526">"バイブレーション"</string>
     <string name="vibrate_summary" msgid="5224303668448643275">"着信時バイブレーションをONにする"</string>
+    <string name="speaker_notifications">通知音は常にスピーカー</string>
+    <string name="speaker_notifications_summary">ヘッドフォンを接続していても通知音はスピーカーから出力する</string>
     <string name="notification_sound_title" msgid="6316316069880531693">"通知音"</string>
     <string name="notification_sound_summary" msgid="7628081155578496618">"端末の基本通知音を選択"</string>
     <string name="notification_pulse_title" msgid="1247988024534030629">"光を点滅させて通知"</string>
@@ -428,6 +430,40 @@
     <string name="play_media_notification_sounds_enable_summary_off" msgid="8672617597028744693">"SDカード通知時に音を鳴らす"</string>
     <string name="audio_record_proc_title" msgid="4271091199976457534">"ノイズキャンセル"</string>
     <string name="audio_record_proc_summary" msgid="8113628457499616498">"通話中や録音中に周囲のノイズを抑えます。"</string>
+    <!-- Sound settings screen, setting screen option name to enter menu to choose what silent mode affects -->
+    <string name="silent_mode_settings_title">サイレントモードの設定</string>
+    <!-- Sound settings screen, setting option summary text -->
+    <string name="silent_mode_settings_summary">サイレントモードでどの音を消音するか選択する</string>
+
+    <!-- Sound and alerts settings, silent mode submenu -->
+    <!-- Screen title -->
+    <string name="silent_channels_label">サイレントモードで消音するサウンドを選択</string>
+    <string name="silent_mode_settings_reset_to_default_title">初期設定に戻す</string>
+    <string name="silent_mode_settings_reset_to_default_summary"></string>
+    <string name="silent_mode_settings_mute_all_title">すべて消音</string>
+    <string name="silent_mode_settings_mute_all_summary"></string>
+
+    <string name="silent_mode_settings_voice_call_title">音声通話</string>
+    <string name="silent_mode_settings_system_title">システムサウンド</string>
+    <string name="silent_mode_settings_ring_title">着信音</string>
+    <string name="silent_mode_settings_music_title">音楽</string>
+    <string name="silent_mode_settings_alarm_title">アラーム</string>
+    <string name="silent_mode_settings_notification_title">通知</string>
+    <string name="silent_mode_settings_bluetooth_title">Bluetooth 出力</string>
+    <string name="silent_mode_settings_system_enforced_title">システム強制音</string>
+    <string name="silent_mode_settings_dtmf_title">DTMF トーン</string>
+    <string name="silent_mode_settings_tts_title">音声合成</string>
+
+    <string name="silent_mode_settings_voice_call_summary">サイレントモードでアクティブな音声通話を聴かない</string>
+    <string name="silent_mode_settings_system_summary">サイレントモードでシステムサウンドを消す</string>
+    <string name="silent_mode_settings_ring_summary">サイレントモードで着信音を鳴らさない</string>
+    <string name="silent_mode_settings_music_summary">サイレントモードで音楽を再生しない</string>
+    <string name="silent_mode_settings_alarm_summary">サイレントモードでアラームを鳴らさない</string>
+    <string name="silent_mode_settings_notification_summary">サイレントモードで通知音を再生しない</string>
+    <string name="silent_mode_settings_bluetooth_summary">サイレントモードでbluetooth出力をしない</string>
+    <string name="silent_mode_settings_system_enforced_summary">サイレントモードでシステムに必要とされるサウンドを再生しない</string>
+    <string name="silent_mode_settings_dtmf_summary">サイレントモードでダイアル音を鳴らさない</string>
+    <string name="silent_mode_settings_tts_summary">サイレントモードで音声合成を再生しない</string>
     <string name="dock_settings" msgid="1820107306693002541">"ドック"</string>
     <string name="dock_settings_title" msgid="9161438664257429372">"ドックの設定"</string>
     <string name="dock_audio_settings_title" msgid="3324750259959570305">"音声"</string>
@@ -626,6 +662,15 @@
     <string name="lockpattern_settings_enable_pin_based_locking">"PINロックを使用"</string>
     <string name="lockpattern_settings_set_pin_check_timeout">"PINチェックタイムアウト"</string>
     <string name="lockpattern_settings_enable_visible_pattern_title" msgid="104851667540971729">"指の軌跡を線で表示"</string>
+    <string name="lockpattern_settings_enable_visible_dots_title">"ドットを表示"</string>
+    <string name="lockpattern_settings_show_error_path">"失敗時に誤った軌跡を表示"</string>
+    <string name="lockpattern_settings_show_unlock_msg">"アンロックメッセージを表示"</string>
+    <string name="lockpattern_settings_show_unlock_error_msg">"アンロックエラーメッセージを表示"</string>
+    <string name="lockpattern_settings_show_custom_msg">"カスタムメッセージを表示"</string>
+    <string name="lockpattern_settings_show_sliders">"スライダーを表示"</string>
+    <string name="lockpattern_settings_custom_msg">"カスタムメッセージ"</string>
+    <string name="lockpattern_settings_custom_msg_dialog">"カスタムメッセージを入力してください"</string>
+    <string name="lockpattern_settings_incorrect_delay_title">"誤った場合の遅延"</string>
     <string name="lockpattern_settings_enable_tactile_feedback_title" msgid="972174133075372341">"入力時バイブレーション"</string>
     <string name="lockpattern_settings_choose_lock_pattern" msgid="1652352830005653447">"ロック解除パターン設定"</string>
     <string name="lockpattern_settings_change_lock_pattern" msgid="1123908306116495545">"パターンの変更"</string>
@@ -1015,6 +1060,7 @@
     <!-- OpenVPN settings -->
     <string name="vpn_openvpn_port">"サーバポート番号"</string>
     <string name="vpn_openvpn_protocol">"使用するプロトコル"</string>
+    <string name="vpn_openvpn_device">"使用するデバイス"</string>
     <string name="vpn_openvpn_userauth">"ユーザ認証"</string>
     <string name="vpn_openvpn_userauth_summary">"追加のユーザ認証が必要な場合設定する"</string>
     <string name="vpn_openvpn_advanced_titlebar">"追加のOpenVPN設定"</string>
@@ -1073,5 +1119,8 @@
     <string name="proxy_setting">"プロキシ設定"</string>
     <string name="proxy_setting_summary">"インターネットアクセスのためのプロキシ設定"</string>
     <string name="proxy_wifi_only">"WiFiでのみ有効"</string>
+
+    <string name="spare_settings_title">スペアパーツ</string>
+    <string name="launcher_settings_title">ADWLauncher</string>
 
 </resources>
