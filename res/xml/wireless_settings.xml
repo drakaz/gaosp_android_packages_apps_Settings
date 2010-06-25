@@ -23,6 +23,13 @@
         android:persistent="false"
         android:disableDependentsState="true" />
 
+    <CheckBoxPreference
+	android:visibility="gone"
+        android:key="toggle_tethering"
+        android:title="@string/internet_tethering"
+        android:summary="@string/internet_tethering_summary_off"
+        android:persistent="false" />
+
     <!-- Programmatically will have dynamic summary, but we provide the fallback summary. -->
     <CheckBoxPreference
         android:key="toggle_wifi"
