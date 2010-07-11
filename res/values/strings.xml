@@ -1266,6 +1266,7 @@
     <string name="internal_memory">Internal phone storage</string>
     <!-- SD card & phone storage settings screen heading. This is displayed above items that pertain to the SD card -->
     <string name="sd_memory">SD card</string>
+    <string name="sd_memory_ext">External SD card</string>
 
     <!-- SD card & phone storage settings title. The amount of free space for some storage partition.  For example, this is listed under both the "Internal phone storage" section and the "SD card" section. -->
     <string name="memory_available">Available space</string>
