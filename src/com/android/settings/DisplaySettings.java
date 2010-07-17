@@ -45,9 +45,11 @@ public class DisplaySettings extends PreferenceActivity implements
     private static final String KEY_SCREEN_TIMEOUT = "screen_timeout";
     private static final String KEY_ANIMATIONS = "animations";
     private static final String KEY_ACCELEROMETER = "accelerometer";
+    private static final String KEY_PROXIMITY = "proximity";
 
     private ListPreference mAnimations;
     private CheckBoxPreference mAccelerometer;
+    private CheckBoxPreference mProximity;
     private float[] mAnimationScales;
 
     private IWindowManager mWindowManager;
@@ -64,6 +66,8 @@ public class DisplaySettings extends PreferenceActivity implements
         mAnimations.setOnPreferenceChangeListener(this);
         mAccelerometer = (CheckBoxPreference) findPreference(KEY_ACCELEROMETER);
         mAccelerometer.setPersistent(false);
+        mProximity = (CheckBoxPreference) findPreference(KEY_PROXIMITY);
+        mProximity.setPersistent(false);
 
         ListPreference screenTimeoutPreference =
             (ListPreference) findPreference(KEY_SCREEN_TIMEOUT);
@@ -144,6 +148,10 @@ public class DisplaySettings extends PreferenceActivity implements
         mAccelerometer.setChecked(Settings.System.getInt(
                 getContentResolver(),
                 Settings.System.ACCELEROMETER_ROTATION, 0) != 0);
+	mProximity.setChecked(Settings.System.getInt(
+                getContentResolver(),
+                Settings.System.THROTTLE_PROXIMITY_SENSOR, 1) != 0);
+
     }
 
     private void updateAnimationsSummary(Object value) {
@@ -165,6 +173,11 @@ public class DisplaySettings extends PreferenceActivity implements
             Settings.System.putInt(getContentResolver(),
                     Settings.System.ACCELEROMETER_ROTATION,
                     mAccelerometer.isChecked() ? 1 : 0);
+        }
+	if (preference == mProximity) {
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.THROTTLE_PROXIMITY_SENSOR,
+                    mProximity.isChecked() ? 1 : 0);
         }
         return true;
     }
