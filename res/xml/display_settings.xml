@@ -27,6 +27,10 @@
             android:key="accelerometer"
             android:title="@string/accelerometer_title"/>
 
+        <CheckBoxPreference
+            android:key="proximity"
+            android:title="@string/proximity_title"/>
+
         <ListPreference
             android:key="animations"
             android:title="@string/animations_title"
