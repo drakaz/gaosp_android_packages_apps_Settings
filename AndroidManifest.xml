@@ -601,6 +601,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="MediaFormat_ext" android:label="@string/media_format_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+
         <activity android:name=".quicklaunch.QuickLaunchSettings"
                 android:label="@string/quick_launch_title">
             <intent-filter>
