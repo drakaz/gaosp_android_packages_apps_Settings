@@ -673,6 +673,7 @@
     <string name="lockpattern_settings_show_custom_msg">Mostra messaggio personalizzato</string>
     <string name="lockpattern_settings_custom_msg">Messaggio personalizzato</string>
     <string name="lockpattern_settings_custom_msg_dialog">Inserisci un messaggio personalizzato</string>
+    <string name="lockpattern_settings_custom_msg_color">Colore messaggio pers.</string>
     <string name="lockpattern_settings_incorrect_delay_title">Imposta ritardo sequenza errata</string>
     <string name="skip_button_label" msgid="8680422740354436943">"Annulla"</string>
     <string name="next_button_label" msgid="8890792540116568321">"Avanti"</string>
@@ -1142,7 +1143,8 @@
     <string name="cm_settings_title">CyanogenMod</string>
 
     <string name="possibleButtons">Interruttori Disponibili</string>
-    <string name="toggleWifi">Interruttore Wifi</string>
+    <string name="toggleWifi">Interruttore Wi-Fi</string>
+    <string name="toggleWifiAp">Interruttore hotspot Wi-Fi</string>
     <string name="toggleBluetooth">Interruttore Bluetooth</string>
     <string name="toggleGPS">Interruttore GPS</string>
     <string name="toggleData">Interruttore Mobile Data</string>
@@ -1156,7 +1158,8 @@
     <string name="toggleFlashlight">Interruttore Torcia</string>
     <string name="toggleLockScreen">Interruttore Lock Screen</string>
 
-    <string name="toggleWifiDescription">Attiva/disattiva Wifi</string>
+    <string name="toggleWifiDescription">Attiva/disattiva Wi-Fi</string>
+    <string name="toggleWifiApDescription">Attiva/disattiva l\'hotspot Wi-Fi portatile</string>
     <string name="toggleBluetoothDescription">Attiva/disattiva Bluetooth</string>
     <string name="toggleGPSDescription">Attiva/disattiva GPS</string>
     <string name="toggleDataDescription">Attiva/disattiva mobile data</string>
@@ -1170,27 +1173,44 @@
     <string name="toggleFlashlightDescription">Attiva/disattiva Torcia</string>
     <string name="toggleLockScreenDescription">Attiva/disattiva lock screen</string>
     
+    <string name="widgetSettings">Impostazioni Widget</string>
+    <string name="wifiSettings">Impostazioni Wi-Fi</string>
+    <string name="dataSettings">Impostazioni Data</string>
+    <string name="powerSettings">Impostazioni Alimentazione</string>
+
     <string name="generalSettings">Impostazioni Generali</string>
 
-    <string name="autoDisable3G">Disattiva 3G (auto)</string>
-    <string name="autoEnable3G">Attiva 3G (auto)</string>
+    <string name="autoDisable3G">Data disattiva 3G</string>
+    <string name="autoEnable3G">Data attiva 3G</string>
+    <string name="autoDisable3GWithWifi">Wi-Fi disattiva 3G</string>
+    <string name="autoEnable3GWithWifi">Wi-Fi attiva 3G</string>
     <string name="useRoundCorners">Spigoli arrotondati</string>
     <string name="useVertical">Layout Verticale</string>
     <string name="useTransparent">Widget trasparente</string>
-    <string name="autoEnableSyncWithWifi">Attiva Sync (auto)</string>
-    <string name="autoDisableSyncWithWifi">Disattiva Sync (auto)</string>
+    <string name="autoEnableSyncWithWifi">Wi-Fi attiva Sync</string>
+    <string name="autoDisableSyncWithWifi">Wi-Fi disattiva Sync</string>
     <string name="ringModeVibrateAsOn">Vibra come ON</string>
     <string name="monitorDataRoaming">Controllo Roaming dati</string>
+    <string name="autoEnableBluetoothWithPower">Alimentazione attiva Bluetooth</string>
+    <string name="autoDisableBluetoothWithPower">Alimentazione disattiva Bluetooth</string>
+    <string name="autoEnableWifiWithPower">Alimentazione attiva Wi-Fi</string>
+    <string name="autoDisableWifiWithPower">Alimentazione disattiva Wi-Fi</string>
 
     <string name="autoDisable3GDescription">2G quando mobile data non è attivo</string>
     <string name="autoEnable3GDescription">3G quando mobile data è attivo</string>
+    <string name="autoDisable3GWithWifiDescription">2G quando Wi-Fi è attivo</string>
+    <string name="autoEnable3GWithWifiDescription">3G quando Wi-Fi non è attivo</string>
     <string name="useRoundCornersDescription">usa spigoli arrotondati per il widget</string>
     <string name="useTransparentDescription">Nessuno sfondo per il widget</string>
     <string name="useVerticalDescription">Mostra con orientazione verticale</string>
-    <string name="autoEnableSyncWithWifiDescription">Attiva sync quando il WIFI è attivo</string>
-    <string name="autoDisableSyncWithWifiDescription">Disattiva sync quando il WIFI non è attivo</string>
-    <string name="ringModeVibrateAsOnDescription">Mostra suono come attivo quando in modalità vibrazione</string>
+    <string name="autoEnableSyncWithWifiDescription">Attiva sync quando il Wi-Fi è attivo</string>
+    <string name="autoDisableSyncWithWifiDescription">Disattiva sync quando il Wi-Fi non è attivo</string>
+    <string name="ringModeVibrateAsOnDescription">Mostra suono attivo in mod. vibrazione</string>
     <string name="monitorDataRoamingDescription">Status Data rosso se roaming attivo</string>
+    <string name="autoEnableBluetoothWithPowerDescription">Attiva Bluetooth quando sotto carica</string>
+    <string name="autoDisableBluetoothWithPowerDescription">Disattiva Bluetooth quando non sotto carica</string>
+    <string name="autoEnableWifiWithPowerDescription">Attiva Wi-Fi quando sotto carica</string>
+    <string name="autoDisableWifiWithPowerDescription">Disattiva Wi-Fi quando non sotto carica</string>
 
     <string name="networkModeSpinner">Scegli mod. di Rete</string>
     <string name="brightnessSpinner">Scegli liv. di Luminosità</string>
