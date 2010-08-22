@@ -1219,7 +1219,13 @@
     <string name="brightnessSpinner">"明るさレベルの選択"</string>
     <string name="ringModeSpinner">"着信音モードの選択"</string>
     <string name="screenTimeoutSpinner">"スクリーンタイムアウトの選択"</string>
+    <string name="backgroundImageSpinner">"背景を選択"</string>
 
-    <string name="notConfigured">"未設定"</string>
+    <string name="notConfigured">"未設定 もう一度追加してください"</string>
+
+    <!-- Proxy settings -->
+    <string name="proxy_setting">"プロキシ設定"</string>
+    <string name="proxy_setting_summary">"インターネットアクセス用のプロキシを設定する"</string>
+    <string name="proxy_wifi_only">"Wi-Fiでのみプロキシを使用する"</string>
 
 </resources>

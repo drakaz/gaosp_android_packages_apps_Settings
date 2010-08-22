@@ -1191,8 +1191,8 @@
     <string name="autoDisableSyncWithWifi">Wi-Fi disattiva Sync</string>
     <string name="ringModeVibrateAsOn">Vibra come ON</string>
     <string name="monitorDataRoaming">Controllo Roaming dati</string>
-    <string name="autoEnableBluetoothWithPower">Alimentazione attiva Bluetooth</string>
-    <string name="autoDisableBluetoothWithPower">Alimentazione disattiva Bluetooth</string>
+    <string name="autoEnableBluetoothWithPower">Alimentazione attiva BT</string>
+    <string name="autoDisableBluetoothWithPower">Alimentazione disattiva BT</string>
     <string name="autoEnableWifiWithPower">Alimentazione attiva Wi-Fi</string>
     <string name="autoDisableWifiWithPower">Alimentazione disattiva Wi-Fi</string>
 
@@ -1216,8 +1216,15 @@
     <string name="brightnessSpinner">Scegli liv. di Luminosità</string>
     <string name="ringModeSpinner">Scegli mod. di Suoneria</string>
     <string name="screenTimeoutSpinner">Scegli Timeout Display</string>
+    <string name="backgroundImageSpinner">Scegli sfondo</string>
     
-    <string name="notConfigured">Non Configurato</string>
+    <string name="notConfigured">Non Configurato. Riaggiungi widget</string>
 
     <string name="ok">Ok</string>
+
+    <!-- Proxy settings -->
+    <string name="proxy_setting">Impostazioni proxy</string>
+    <string name="proxy_setting_summary">Configura un proxy per l\'accesso a internet</string>
+    <string name="proxy_wifi_only">Usa proxy solo con wifi</string>
+
 </resources>

@@ -2673,8 +2673,15 @@ found in the list of installed applications.</string>
     <string name="brightnessSpinner">Choose Brightness levels</string>
     <string name="ringModeSpinner">Choose Ring modes</string>
     <string name="screenTimeoutSpinner">Choose Screen Timeout</string>
+    <string name="backgroundImageSpinner">Choose background</string> 
     
-    <string name="notConfigured">Not Configured</string>
+    <string name="notConfigured">Not configured. Please add again</string>
 
     <string name="ok">Ok</string>
+
+    <!-- Proxy settings -->
+    <string name="proxy_setting">Proxy settings</string>
+    <string name="proxy_setting_summary">Configure a proxy to access the internet</string>
+    <string name="proxy_wifi_only">Use proxy only on wifi</string>
+
 </resources>
