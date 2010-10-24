@@ -72,6 +72,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
 
     private static final int DLG_CONFIRM_UNMOUNT = 1;
     private static final int DLG_ERROR_UNMOUNT = 2;
+    private static final int DLG_CONFIRM_UNMOUNTEXT = 3;
 
     private Resources mRes;
 
@@ -222,6 +223,17 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             .setMessage(R.string.dlg_error_unmount_text)
             .setOnCancelListener(this)
             .create();
+        case DLG_CONFIRM_UNMOUNTEXT:
+            return new AlertDialog.Builder(this)
+                    .setTitle(R.string.dlg_confirm_unmount_title)
+                    .setPositiveButton(R.string.dlg_ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            doUnmount_ext(true);
+                        }})
+                    .setNegativeButton(R.string.cancel, null)
+                    .setMessage(R.string.dlg_confirm_unmount_text)
+                    .setOnCancelListener(this)
+                    .create();
         }
         return null;
     }
@@ -317,7 +329,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
            if (hasAppsAccessingStorage()) {
                if (localLOGV) Log.i(TAG, "Do have storage users accessing media");
                // Present dialog to user
-               showDialogInner(DLG_CONFIRM_UNMOUNT);
+               showDialogInner(DLG_CONFIRM_UNMOUNTEXT);
            } else {
                doUnmount_ext(true);
            }
