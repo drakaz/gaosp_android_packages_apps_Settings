@@ -64,6 +64,18 @@
         </com.android.settings.IconPreferenceScreen>
 
 
+        <!-- GAOSP Conf -->
+
+        <com.android.settings.IconPreferenceScreen
+            settings:icon="@drawable/ic_gaospconf"
+            android:title="@string/gaosp_settings_title">
+            <intent
+                android:action="android.intent.action.MAIN"
+                android:targetPackage="com.android.gaospconf"
+                android:targetClass="com.android.gaospconf.conf" />
+        </com.android.settings.IconPreferenceScreen>
+
+
         <!-- Launcher -->
 
         <com.android.settings.IconPreferenceScreen
