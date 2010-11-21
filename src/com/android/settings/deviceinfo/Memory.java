@@ -158,7 +158,6 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
 
         mIntSize = findPreference(MEMORY_INTERNAL_SIZE);
         mIntAvail = findPreference(MEMORY_INTERNAL_AVAIL);
->>>>>>> 7305a2701568d9aa8a45aabde13cac973729a62b
     }
     
     @Override
