@@ -502,7 +502,6 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             }
 	}
 
-        if (null != mAddlPath) {
         for (String path: getAdditionalVolumePaths()) {
             Preference size = findPreference(MEMORY_ADDITIONAL_SIZE + path);
             Preference available = findPreference(MEMORY_ADDITIONAL_AVAIL + path);
