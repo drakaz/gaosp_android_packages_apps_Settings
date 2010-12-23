@@ -227,11 +227,11 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             }
             return true;
 	} else if (preference == mSdMountToggle_ext) {
-	    String status = Environment.getExternalSdState();
+	    String status = Environment.getExternalStorageState();
             if (status.equals(Environment.MEDIA_MOUNTED)) {
-               	unmount_ext();
+               	unmount();
              } else {
-             	mount_ext();
+             	mount();
             }
             return true;
         } else if (preference == mSdFormat) {
@@ -410,7 +410,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
 
     private void updateMemoryStatus() {
         String status = Environment.getExternalStorageState();
-        String status_ext = Environment.getExternalSdState();
+        String status_ext = Environment.getExternalStorageState();
         String readOnly = "";
         if (status.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
             status = Environment.MEDIA_MOUNTED;
