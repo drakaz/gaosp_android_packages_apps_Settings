@@ -470,6 +470,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             if (status.equals(Environment.MEDIA_UNMOUNTED) ||
                 status.equals(Environment.MEDIA_NOFS) ||
                 status.equals(Environment.MEDIA_UNMOUNTABLE) ) {
+		mSdFormat.setEnabled(true);
                 mSdMountToggle.setEnabled(true);
                 mSdMountToggle.setTitle(R.string.sd_mount);
                 mSdMountToggle.setSummary(R.string.sd_mount_summary);
