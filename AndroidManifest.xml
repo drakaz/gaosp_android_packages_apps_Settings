@@ -146,7 +146,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".wifi.WifiApSettings">
+        <activity android:name=".wifi.WifiApSettings"
+                android:configChanges="orientation|keyboardHidden"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -327,6 +329,36 @@
                 <category android:name="android.intent.category.VOICE_LAUNCH" />
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
+        </activity>
+
+        <activity android:name="ProfileList"
+                android:label="@string/profile_settings"
+                android:clearTaskOnLaunch="true"
+                >
+        </activity>
+
+        <activity android:name="ProfileGroupConfig"
+                android:label="@string/profile_settings"
+                android:clearTaskOnLaunch="false"
+                >
+        </activity>
+
+        <activity android:name="AppGroupList"
+                android:label="@string/profile_settings"
+                android:clearTaskOnLaunch="false"
+                >
+        </activity>
+
+        <activity android:name="AppGroupConfig"
+                android:label="@string/profile_settings"
+                android:clearTaskOnLaunch="false"
+                >
+        </activity>
+
+        <activity android:name="ProfileConfig"
+                android:label="@string/profile_settings"
+                android:clearTaskOnLaunch="false"
+                >
         </activity>
 
         <activity android:name="DockSettings"
