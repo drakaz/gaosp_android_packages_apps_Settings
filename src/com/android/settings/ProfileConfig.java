@@ -30,6 +30,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
 
 public class ProfileConfig extends PreferenceActivity implements OnPreferenceChangeListener {
 
@@ -61,7 +62,7 @@ public class ProfileConfig extends PreferenceActivity implements OnPreferenceCha
         }
 
         if (mProfile == null) {
-            mProfile = new Profile("<new profile>");
+            mProfile = new Profile(getString(R.string.new_profile_name));
             mProfileManager.addProfile(mProfile);
         }
 
@@ -154,7 +155,12 @@ public class ProfileConfig extends PreferenceActivity implements OnPreferenceCha
     }
 
     private void deleteProfile() {
-        showDialog(DELETE_CONFIRM);
+        if (mProfile.getName().equals(mProfileManager.getActiveProfile().getName())) {
+            Toast toast = Toast.makeText(this, getString(R.string.profile_cannot_delete), Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            showDialog(DELETE_CONFIRM);
+        }
     }
 
     private void doDelete(){
