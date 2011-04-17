@@ -26,9 +26,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import android.os.Environment;
 import android.os.storage.IMountService;
@@ -40,7 +44,6 @@ import android.os.storage.StorageEventListener;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
-import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.text.format.Formatter;
 import android.util.Log;
@@ -50,8 +53,9 @@ import com.android.settings.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.HashMap;
+import java.util.Set;
 
 public class Memory extends PreferenceActivity implements OnCancelListener {
     private static final String TAG = "Memory";
@@ -69,8 +73,6 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
     private static final String MEMORY_SD_FORMAT = "memory_sd_format";
     private static final String MEMORY_SD_FORMAT_EXT = "memory_sd_format_ext";
 
-    private static final String MEMORY_SD_GROUP = "memory_sd";
-
     private static final String MEMORY_ADDITIONAL_CATEGORY = "memory_additional_category";
 
     private static final String MEMORY_ADDITIONAL_SIZE = "memory_additional_size";
@@ -87,20 +89,18 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
 
     private Resources mRes;
 
-    private String sdPath = Environment.getExternalStorageDirectory().getPath();
-    private PreferenceGroup mSdMountPreferenceGroup;
-
-    boolean mSdMountToggleAdded = true;
-
-    private Preference mIntSize;
-    private Preference mIntAvail;
+    private Preference mSdSize;
+    private Preference mSdAvail;
+    private Preference mSdMountToggle;
+    private Preference mSdFormat;
     private Preference mSdSize_ext;
     private Preference mSdAvail_ext;
     private Preference mSdMountToggle_ext;
     private Preference mSdFormat_ext;
-    private HashMap<String, String> mountToggles = new HashMap<String, String>();
-    private HashMap<String, String> formatToggles = new HashMap<String, String>();
 
+    private Preference mIntSize;
+    private Preference mIntAvail;
+    
     // Access using getMountService()
     private IMountService mMountService = null;
 
@@ -130,14 +130,17 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         }
 
         addPreferencesFromResource(R.xml.device_info_memory);
-
+        
         mRes = getResources();
 
-        findPreference(MEMORY_SD_MOUNT_TOGGLE).setKey(MEMORY_SD_MOUNT_TOGGLE + sdPath);
-        mountToggles.put(MEMORY_SD_MOUNT_TOGGLE + sdPath, sdPath);
-        findPreference(MEMORY_SD_FORMAT).setKey(MEMORY_SD_FORMAT + sdPath);
-        formatToggles.put(MEMORY_SD_FORMAT + sdPath, sdPath);
-        mSdMountPreferenceGroup = (PreferenceGroup)findPreference(MEMORY_SD_GROUP);
+        mSdSize = findPreference(MEMORY_SD_SIZE);
+        mSdAvail = findPreference(MEMORY_SD_AVAIL);
+        mSdMountToggle = findPreference(MEMORY_SD_MOUNT_TOGGLE);
+        mSdFormat = findPreference(MEMORY_SD_FORMAT);
+        mSdSize_ext = findPreference(MEMORY_SD_SIZE_EXT);
+        mSdAvail_ext = findPreference(MEMORY_SD_AVAIL_EXT);
+        mSdMountToggle_ext = findPreference(MEMORY_SD_MOUNT_TOGGLE_EXT);
+        mSdFormat_ext = findPreference(MEMORY_SD_FORMAT_EXT);
 
         mIntSize = findPreference(MEMORY_INTERNAL_SIZE);
         mIntAvail = findPreference(MEMORY_INTERNAL_AVAIL);
@@ -145,7 +148,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         for (String path: getAdditionalVolumePaths()) {
             PreferenceCategory category = new PreferenceCategory(this);
             category.setKey(MEMORY_ADDITIONAL_CATEGORY + path);
-            category.setTitle(mRes.getString(R.string.additional_memory) + ": " + path);
+            category.setTitle(mRes.getString(R.string.internal_memory) + ": " + path);
             getPreferenceScreen().addPreference(category);
 
             Preference size = new Preference(this, null,
@@ -161,29 +164,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             available.setTitle(R.string.memory_available);
             available.setSummary(R.string.sd_unavailable);
             category.addPreference(available);
-
-            Preference unmount = new Preference(this, null,
-                    android.R.attr.preferenceStyle);
-            unmount.setKey(MEMORY_SD_MOUNT_TOGGLE + path);
-            unmount.setEnabled(true);
-            unmount.setTitle(R.string.sd_eject);
-            unmount.setSummary(R.string.sd_eject_summary);
-            category.addPreference(unmount);
-            mountToggles.put(MEMORY_SD_MOUNT_TOGGLE + path, path);
-
-            Preference format = new Preference(this, null,
-                    android.R.attr.preferenceStyle);
-            format.setKey(MEMORY_SD_FORMAT + path);
-            format.setEnabled(true);
-            format.setTitle(R.string.sd_format);
-            format.setSummary(R.string.sd_format_summary);
-            category.addPreference(format);
-            formatToggles.put(MEMORY_SD_FORMAT + path, path);
         }
-        mSdSize_ext = findPreference(MEMORY_SD_SIZE_EXT);
-        mSdAvail_ext = findPreference(MEMORY_SD_AVAIL_EXT);
-        mSdMountToggle_ext = findPreference(MEMORY_SD_MOUNT_TOGGLE_EXT);
-        mSdFormat_ext = findPreference(MEMORY_SD_FORMAT_EXT);
     }
     
     @Override
@@ -237,20 +218,12 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
     
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-        String clickedItem = preference.getKey();
-
-        if (mountToggles.containsKey(clickedItem)) {
-            String path = mountToggles.get(clickedItem);
-            String status = new String();
-            try {
-                status = getMountService().getVolumeState(path);
-            } catch (RemoteException ex) {
-                status = Environment.MEDIA_UNMOUNTED;
-            }
+        if (preference == mSdMountToggle) {
+            String status = Environment.getExternalStorageState();
             if (status.equals(Environment.MEDIA_MOUNTED)) {
-                unmount(path);
+                unmount();
             } else {
-                mount(path);
+                mount();
             }
             return true;
 	} else if (preference == mSdMountToggle_ext) {
@@ -263,7 +236,6 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             return true;
         } else if (preference == mSdFormat) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.putExtra("path", path);
             intent.setClass(this, com.android.settings.MediaFormat.class);
             startActivity(intent);
             return true;
@@ -287,21 +259,20 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
 
     @Override
     public Dialog onCreateDialog(int id, Bundle args) {
-        final String path = args.getString("path");
         switch (id) {
         case DLG_CONFIRM_UNMOUNT:
             return new AlertDialog.Builder(this)
                     .setTitle(R.string.dlg_confirm_unmount_title)
                     .setPositiveButton(R.string.dlg_ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            doUnmount(path, true);
+                            doUnmount(true);
                         }})
                     .setNegativeButton(R.string.cancel, null)
                     .setMessage(R.string.dlg_confirm_unmount_text)
                     .setOnCancelListener(this)
                     .create();
         case DLG_ERROR_UNMOUNT:
-            return new AlertDialog.Builder(this)
+            return new AlertDialog.Builder(this                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            )
             .setTitle(R.string.dlg_error_unmount_title)
             .setNeutralButton(R.string.dlg_ok, null)
             .setMessage(R.string.dlg_error_unmount_text)
@@ -322,20 +293,20 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         return null;
     }
 
-    private void doUnmount(String path, boolean force) {
+    private void doUnmount(boolean force) {
         // Present a toast here
         Toast.makeText(this, R.string.unmount_inform_text, Toast.LENGTH_SHORT).show();
         IMountService mountService = getMountService();
-        Preference sdMountToggle = findPreference(MEMORY_SD_MOUNT_TOGGLE + path);
+        String extStoragePath = Environment.getExternalStorageDirectory().toString();
         try {
-            sdMountToggle.setEnabled(false);
-            sdMountToggle.setTitle(R.string.sd_ejecting_title);
-            sdMountToggle.setSummary(R.string.sd_ejecting_summary);
-            mountService.unmountVolume(path, force);
+            mSdMountToggle.setEnabled(false);
+            mSdMountToggle.setTitle(R.string.sd_ejecting_title);
+            mSdMountToggle.setSummary(R.string.sd_ejecting_summary);
+            mountService.unmountVolume(extStoragePath, force);
         } catch (RemoteException e) {
             // Informative dialog to user that
             // unmount failed.
-            showDialogInner(DLG_ERROR_UNMOUNT, path);
+            showDialogInner(DLG_ERROR_UNMOUNT);
         }
     }
 
@@ -358,17 +329,15 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
 
 
     private void showDialogInner(int id) {
-    private void showDialogInner(int id, String path) {
-        Bundle bPath = new Bundle();
-        bPath.putString("path", path);
->>>>>>> 1222169251ce2d968af9dc6beeba1e4e898451af
         removeDialog(id);
-        showDialog(id, bPath);
+        showDialog(id);
     }
 
-    private boolean hasAppsAccessingStorage(String path) throws RemoteException {
+    private boolean hasAppsAccessingStorage() throws RemoteException {
+        String extStoragePath = Environment.getExternalStorageDirectory().toString();
         IMountService mountService = getMountService();
-        int stUsers[] = mountService.getStorageUsers(path);
+        boolean showPidDialog = false;
+        int stUsers[] = mountService.getStorageUsers(extStoragePath);
         if (stUsers != null && stUsers.length > 0) {
             return true;
         }
@@ -380,28 +349,28 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         return false;
     }
 
-    private void unmount(String path) {
+    private void unmount() {
         // Check if external media is in use.
         try {
-           if (hasAppsAccessingStorage(path)) {
+           if (hasAppsAccessingStorage()) {
                if (localLOGV) Log.i(TAG, "Do have storage users accessing media");
                // Present dialog to user
-               showDialogInner(DLG_CONFIRM_UNMOUNT, path);
+               showDialogInner(DLG_CONFIRM_UNMOUNT);
            } else {
-               doUnmount(path, true);
+               doUnmount(true);
            }
         } catch (RemoteException e) {
             // Very unlikely. But present an error dialog anyway
             Log.e(TAG, "Is MountService running?");
-            showDialogInner(DLG_ERROR_UNMOUNT, path);
+            showDialogInner(DLG_ERROR_UNMOUNT);
         }
     }
 
-    private void mount(String path) {
+    private void mount() {
         IMountService mountService = getMountService();
         try {
             if (mountService != null) {
-                mountService.mountVolume(path);
+                mountService.mountVolume(Environment.getExternalStorageDirectory().toString());
             } else {
                 Log.e(TAG, "Mount service is null, can't mount");
             }
@@ -443,11 +412,6 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         String status = Environment.getExternalStorageState();
         String status_ext = Environment.getExternalStorageState();
         String readOnly = "";
-        Preference mount = findPreference(MEMORY_SD_MOUNT_TOGGLE + sdPath);
-        Preference format = findPreference(MEMORY_SD_FORMAT + sdPath);
-        Preference size = findPreference(MEMORY_SD_SIZE);
-        Preference avail = findPreference(MEMORY_SD_AVAIL);
-
         if (status.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
             status = Environment.MEDIA_MOUNTED;
             readOnly = mRes.getString(R.string.read_only);
@@ -461,14 +425,6 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         mSdFormat_ext.setEnabled(false);
 
         if (status.equals(Environment.MEDIA_MOUNTED)) {
-            if (!Environment.isExternalStorageRemovable()) {
-                // This device has built-in storage that is not removable.
-                // There is no reason for the user to unmount it.
-                if (mSdMountToggleAdded) {
-                    mSdMountPreferenceGroup.removePreference(mount);
-                    mSdMountToggleAdded = false;
-                }
-            }
             try {
                 File path = Environment.getExternalStorageDirectory();
                 StatFs stat = new StatFs(path.getPath());
@@ -476,97 +432,40 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
                 long totalBlocks = stat.getBlockCount();
                 long availableBlocks = stat.getAvailableBlocks();
                 
-                size.setSummary(formatSize(totalBlocks * blockSize));
-                avail.setSummary(formatSize(availableBlocks * blockSize) + readOnly);
+                mSdSize.setSummary(formatSize(totalBlocks * blockSize));
+                mSdAvail.setSummary(formatSize(availableBlocks * blockSize) + readOnly);
 
-                mount.setEnabled(true);
-                mount.setTitle(R.string.sd_eject);
-                mount.setSummary(R.string.sd_eject_summary);
+                mSdMountToggle.setEnabled(true);
+                mSdMountToggle.setTitle(R.string.sd_eject);
+                mSdMountToggle.setSummary(R.string.sd_eject_summary);
 
             } catch (IllegalArgumentException e) {
-                // this can occur if the SD card is removed, but we haven't received the
+                // this can occur if the SD card is removed, but we haven't received the 
                 // ACTION_MEDIA_REMOVED Intent yet.
                 status = Environment.MEDIA_REMOVED;
             }
             
         } else {
-            size.setSummary(R.string.sd_unavailable);
-            avail.setSummary(R.string.sd_unavailable);
-
-
-            if (!Environment.isExternalStorageRemovable()) {
-                if (status.equals(Environment.MEDIA_UNMOUNTED)) {
-                    if (!mSdMountToggleAdded) {
-                        mSdMountPreferenceGroup.addPreference(mount);
-                        mSdMountToggleAdded = true;
-                    }
-                }
-            }
+            mSdSize.setSummary(R.string.sd_unavailable);
+            mSdAvail.setSummary(R.string.sd_unavailable);
 
             if (status.equals(Environment.MEDIA_UNMOUNTED) ||
                 status.equals(Environment.MEDIA_NOFS) ||
                 status.equals(Environment.MEDIA_UNMOUNTABLE) ) {
-		mSdFormat.setEnabled(true);
+                mSdFormat.setEnabled(true);
                 mSdMountToggle.setEnabled(true);
                 mSdMountToggle.setTitle(R.string.sd_mount);
                 mSdMountToggle.setSummary(R.string.sd_mount_summary);
             } else {
-                mount.setEnabled(false);
-                mount.setTitle(R.string.sd_mount);
-                mount.setSummary(R.string.sd_insert_summary);
-            }
-        }
-
-        for (String path: getAdditionalVolumePaths()) {
-            size = findPreference(MEMORY_ADDITIONAL_SIZE + path);
-            avail = findPreference(MEMORY_ADDITIONAL_AVAIL + path);
-            mount = findPreference(MEMORY_SD_MOUNT_TOGGLE + path);
-            format = findPreference(MEMORY_SD_FORMAT + path);
-            if (null == size || null == avail) {
-                continue;
-            }
-
-            try {
-                status = getMountService().getVolumeState(path);
-            } catch (RemoteException ex) {
-                status = Environment.MEDIA_UNMOUNTED;
-            }
-            if (status.equals(Environment.MEDIA_MOUNTED)) {
-                try {
-                    StatFs stat = new StatFs(path);
-                    long blockSize = stat.getBlockSize();
-                    long totalBlocks = stat.getBlockCount();
-                    long availableBlocks = stat.getAvailableBlocks();
-                    size.setSummary(formatSize(totalBlocks * blockSize));
-                    avail.setSummary(formatSize(availableBlocks * blockSize));
-                    mount.setEnabled(true);
-                    mount.setTitle(R.string.sd_eject);
-                    mount.setSummary(R.string.sd_eject_summary);
-                } catch (IllegalArgumentException e) {
-                    // this can occur if the SD card is removed, but we haven't received the
-                    // ACTION_MEDIA_REMOVED Intent yet.
-                    status = Environment.MEDIA_REMOVED;
-                }
-            } else {
-                size.setSummary(R.string.sd_unavailable);
-                avail.setSummary(R.string.sd_unavailable);
-                if (status.equals(Environment.MEDIA_UNMOUNTED) ||
-                    status.equals(Environment.MEDIA_NOFS) ||
-                    status.equals(Environment.MEDIA_UNMOUNTABLE) ) {
-                    mount.setEnabled(true);
-                    mount.setTitle(R.string.sd_mount);
-                    mount.setSummary(R.string.sd_mount_summary);
-                } else {
-                    mount.setEnabled(false);
-                    mount.setTitle(R.string.sd_mount);
-                    mount.setSummary(R.string.sd_insert_summary);
-                }
+                mSdMountToggle.setEnabled(false);
+                mSdMountToggle.setTitle(R.string.sd_mount);
+                mSdMountToggle.setSummary(R.string.sd_insert_summary);
             }
         }
 
         if (status_ext.equals(Environment.MEDIA_MOUNTED)) {
             try {
-                File path = Environment.getExternalSdDirectory();
+                File path = Environment.getExternalStorage2Directory();
                 StatFs stat = new StatFs(path.getPath());
                 long blockSize = stat.getBlockSize();
                 long totalBlocks = stat.getBlockCount();
@@ -603,6 +502,30 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             }
 	}
 
+        for (String path: getAdditionalVolumePaths()) {
+            Preference size = findPreference(MEMORY_ADDITIONAL_SIZE + path);
+            Preference available = findPreference(MEMORY_ADDITIONAL_AVAIL + path);
+            if (null == size || null == available) {
+                continue;
+            }
+
+            try {
+                status = getMountService().getVolumeState(path);
+            } catch (RemoteException ex) {
+                status = Environment.MEDIA_UNMOUNTED;
+            }
+            if (status.equals(Environment.MEDIA_MOUNTED)) {
+                StatFs stat = new StatFs(path);
+                long blockSize = stat.getBlockSize();
+                long totalBlocks = stat.getBlockCount();
+                long availableBlocks = stat.getAvailableBlocks();
+                size.setSummary(formatSize(totalBlocks * blockSize));
+                available.setSummary(formatSize(availableBlocks * blockSize));
+            } else {
+                size.setSummary(R.string.sd_unavailable);
+                available.setSummary(R.string.sd_unavailable);
+            }
+        }
 
         File path = Environment.getDataDirectory();
         StatFs stat = new StatFs(path.getPath());
@@ -622,3 +545,4 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
     }
     
 }
+
